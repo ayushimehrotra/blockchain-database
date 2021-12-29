@@ -1,0 +1,192 @@
+import datetime
+import hashlib
+import json
+import timeit
+
+
+class BlockchainDatabase:
+
+    def __init__(self):
+        self.append_chain = []
+        self.delete_chain = []
+        self.appends(previous_hash='0', data={'test': '0'}, sortkey='initial')
+        self.delete(previous_hash='0', sortkey='initial')
+
+    def appends(self, previous_hash, data: dict, sortkey):
+        block = {'Block Header':
+                     dict(index=len(self.append_chain) + 1, timestamp=str(datetime.datetime.now()),
+                          previous_hash=previous_hash)
+            ,
+                 'Block Body':
+                     {
+                         'key': hashlib.sha256(sortkey.encode()).hexdigest(),
+                         'data': data
+                     }
+
+                 }
+        self.append_chain.append(block)
+        return block
+
+    def delete(self, previous_hash, sortkey):
+        block = {'Block Header':
+                     dict(index=len(self.delete_chain) + 1, timestamp=str(datetime.datetime.now()),
+                          previous_hash=previous_hash)
+            ,
+                 'Block Body':
+                     {
+                         'key': hashlib.sha256(sortkey.encode()).hexdigest(),
+                     }
+
+                 }
+        self.delete_chain.append(block)
+        return block
+
+    def print_previous_block_append(self):
+        return self.append_chain[-1]
+
+    def print_previous_block_delete(self):
+        return self.delete_chain[-1]
+
+    def hash(self, block):
+        encoded_block = json.dumps(block, sort_keys=True).encode()
+        return hashlib.sha256(encoded_block).hexdigest()
+
+    def query(self, append_chain, delete_chain, sortkey):
+        block_index = 0
+        temp_return = 0
+        while block_index < len(append_chain):
+            appblock = append_chain[block_index]
+            if appblock['Block Body']['key'] == sortkey:
+                temp_return = appblock['Block Body']['data']
+            block_index += 1
+
+        block_index = 0
+        while block_index < len(delete_chain):
+            delblock = delete_chain[block_index]
+            if delblock['Block Body']['key'] == sortkey and temp_return != 0:
+                return 'Data deleted'
+            block_index += 1
+        if temp_return == 0:
+            return 'Data not found'
+        else:
+            return temp_return
+
+
+blockchain = BlockchainDatabase()
+
+
+def display_chain():
+    response = {'chain': blockchain.delete_chain,
+                'length': len(blockchain.delete_chain)}
+    return response
+
+
+def query_function(sortkey):
+    start = timeit.default_timer()
+    need = blockchain.query(blockchain.append_chain, blockchain.delete_chain, sortkey)
+    end = timeit.default_timer()
+    return need, end - start
+
+
+def append_function(sortkey, data):
+    previous_block_hash = blockchain.hash(blockchain.print_previous_block_append())
+    blockchain.appends(previous_block_hash, data, sortkey)
+
+
+def delete_function(sortkey):
+    previous_block_hash = blockchain.hash(blockchain.print_previous_block_delete())
+    blockchain.delete(previous_block_hash, sortkey)
+
+
+append_function('goose', {'mainly': -95159107})
+append_function('principle', {'roof': 'system'})
+append_function('turn', {'six': -1382480708.8352618})
+append_function('journey', {'plural': -2072286582.2945743})
+append_function('tent', {'disease': -1292663025})
+append_function('strong', {'cream': 'terrible'})
+append_function('official', {'due': 'collect'})
+append_function('climb', {'rest': 'form'})
+append_function('vertical', {'front': 292807770.7954235})
+append_function('her', {'half': 1859186636.0058637})
+append_function('idea', {'transportation': 306106706.34611416})
+append_function('exact', {'hay': -974626700.2333708})
+append_function('burst', {'gas': 'birds'})
+append_function('lungs', {'income': 'dress'})
+append_function('youth', {'given': 1878434215.9818802})
+append_function('prize', {'declared': -1866927899.3249617})
+append_function('shoulder', {'tide': 'were'})
+append_function('chose', {'view': 'town'})
+append_function('sunlight', {'directly': -2029095535.119358})
+append_function('harder', {'individual': 1357402558.0714626})
+append_function('helpful', {'limited': 'ants'})
+append_function('label', {'pure': 'throw'})
+append_function('donkey', {'bring': -998830419})
+append_function('sentence', {'explanation': 'share'})
+append_function('troops', {'apple': 'although'})
+append_function('tired', {'seven': 'chose'})
+append_function('frozen', {'dug': -671694422})
+append_function('has', {'hardly': -1081513182})
+append_function('native', {'second': 'iron'})
+append_function('neck', {'public': 'blanket'})
+append_function('offer', {'possibly': 'property'})
+append_function('indicate', {'having': -608627486})
+append_function('human', {'appearance': 1084286277})
+append_function('hurry', {'tent': 'usual'})
+append_function('onlinetools', {'till': 'faster'})
+append_function('chamber', {'load': -66986619})
+append_function('stick', {'my': 'breathing'})
+append_function('brown', {'particular': 'vegetable'})
+append_function('before', {'branch': -1660589112.558282})
+append_function('oil', {'coast': 'duck'})
+append_function('quickly', {'been': 'feed'})
+append_function('center', {'everywhere': 'went'})
+append_function('discovery', {'son': -2089069219})
+append_function('having', {'wall': 'taught'})
+append_function('mission', {'movie': 'skin'})
+append_function('bread', {'although': 1388750850})
+append_function('onto', {'total': 'alphabet'})
+append_function('ten', {'hundred': 'lucky'})
+append_function('children', {'drive': -1812404179})
+append_function('maybe', {'flew': 'rule'})
+append_function('wet', {'arrangement': 1871518144.7236576})
+append_function('tropical', {'force': -2117726866})
+append_function('molecular', {'member': -85753565.5615573})
+append_function('occasionally', {'flight': 'morning'})
+append_function('just', {'bottom': 620345996})
+append_function('storm', {'best': -231737177})
+append_function('school', {'diameter': -1925645027})
+append_function('game', {'sitting': 'raise'})
+append_function('constantly', {'essential': 389933555})
+append_function('quick', {'over': 999944907})
+append_function('meet', {'doubt': 1233381769.5877433})
+append_function('gradually', {'sing': 'variety'})
+append_function('tell', {'has': 'prepare'})
+append_function('horse', {'perfectly': -1825562399.3875942})
+append_function('few', {'being': 'fair'})
+append_function('pleasant', {'barn': 'whistle'})
+append_function('satisfied', {'eye': 'enjoy'})
+append_function('remarkable', {'laugh': 'lady'})
+append_function('easy', {'supply': 1287568543.4582515})
+append_function('prepare', {'identity': 'rain'})
+append_function('good', {'trunk': 1589164190.3368993})
+append_function('middle', {'built': -1902080813.8667908})
+append_function('breathing', {'monkey': 'two'})
+append_function('location', {'happy': 708941835.5448289})
+append_function('advice', {'cloth': 1759493895})
+append_function('storm', {'instead': 'wise'})
+append_function('larger', {'arm': 1881195900})
+append_function('shoulder', {'basic': 'piece'})
+append_function('load', {'tribe': 'ear'})
+append_function('screen', {'else': -293087819})
+append_function('pig', {'would': 'reason'})
+append_function('form', {'interest': -648339415.3125062})
+append_function('poor', {'to': -879604651.3382072})
+append_function('voice', {'both': 'nobody'})
+append_function('note', {'dead': -1870691843.2576108})
+append_function('think', {'able': -942557052})
+append_function('caught', {'track': -563041498.1947188})
+append_function('ready', {'mix': 'alone'})
+append_function('rays', {'bigger': 'having'})
+append_function('mine', {'married': 'must'})
+
+print(query_function('3fd30542fe3f61b14bd4a4b2dc0b6fb30fa6f63ebce52dd1778aaa8c4dc02cff'))
