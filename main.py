@@ -82,10 +82,7 @@ def display_chain():
 
 
 def query_function(sortkey):
-    start = timeit.default_timer()
-    need = blockchain.query(blockchain.append_chain, blockchain.delete_chain, sortkey)
-    end = timeit.default_timer()
-    return need, end - start
+    return blockchain.query(blockchain.append_chain, blockchain.delete_chain, sortkey)
 
 
 def append_function(sortkey, data):
